@@ -1,0 +1,105 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Snake : MonoBehaviour
+{
+    public GameObject head;
+    public GameObject bodyPart;
+    List<GameObject> body = new List<GameObject>();
+    public Food food;
+    //speed of the snake
+    float speedX, speedY;
+    Vector3 pos;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        body.Add(head);
+        speedX = 1f;
+        speedY = 0f;
+        pos = new Vector3(speedX, 0, 0);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        playerInput();
+
+    }
+    private void FixedUpdate()
+    {
+        //let the bodyparts follow the bodypart before them
+        for (int i = body.Count - 1; i > 0; i--)
+        {
+            body[i].transform.position = body[i - 1].transform.position;
+        }
+        //moveSnake
+        pos +=transform.position;
+        transform.position = new Vector3(Mathf.Round(pos.x),Mathf.Round(pos.y),0);
+    }
+    void playerInput()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            speedY = 1f;
+            pos = new Vector3(0, speedY, 0);
+            speedX = 0;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            speedY = -1f;
+            pos = new Vector3(0, speedY, 0);
+            speedX = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            speedX = 1f;
+            pos = new Vector3(speedX, 0, 0);
+            speedY = 0;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            speedX = -1f;
+            pos = new Vector3(speedX, 0, 0);
+            speedY = 0;
+        }
+        else
+        {
+            pos = new Vector3(speedX, speedY, 0);
+        }
+    }
+
+    /*
+     * Snake eats food and grows taller
+     */
+    void eat()
+    {
+        //TODO sound
+        //TODO add points
+
+    }
+    void grow()
+    {
+        GameObject segment = Instantiate(bodyPart);
+        segment.transform.position = body[body.Count - 1].transform.position;
+        body.Add(segment);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        /*detects the collision with food*/
+        if (collision.tag == "Food")
+        {
+            Object.Destroy(collision.gameObject);
+            eat();
+            grow();
+            food.instantiateNewFood();
+        }
+
+        /* TODO: Detect collision with wall (loose life)*/
+    }
+}
