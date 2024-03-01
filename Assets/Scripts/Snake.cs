@@ -11,11 +11,13 @@ public class Snake : MonoBehaviour
     //speed of the snake
     float speedX, speedY;
     Vector3 pos;
+    int score;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        score = 0;
         body.Add(head);
         speedX = 1f;
         speedY = 0f;
@@ -79,7 +81,9 @@ public class Snake : MonoBehaviour
     void eat()
     {
         //TODO sound
-        //TODO add points
+        
+        //add points
+        score += 10;
 
     }
     void grow()
@@ -87,6 +91,11 @@ public class Snake : MonoBehaviour
         GameObject segment = Instantiate(bodyPart);
         segment.transform.position = body[body.Count - 1].transform.position;
         body.Add(segment);
+    }
+
+    void endGame()
+    {
+        Time.timeScale = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -101,5 +110,9 @@ public class Snake : MonoBehaviour
         }
 
         /* TODO: Detect collision with wall (loose life)*/
+        if(collision.tag == "wall")
+        {
+            endGame();
+        }
     }
 }
