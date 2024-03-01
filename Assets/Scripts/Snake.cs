@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Snake : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Snake : MonoBehaviour
     float speedX, speedY;
     Vector3 pos;
     int score;
+    public GameObject endScreen;
+    public TMP_Text scoreText;
 
 
     // Start is called before the first frame update
@@ -22,6 +25,7 @@ public class Snake : MonoBehaviour
         speedX = 1f;
         speedY = 0f;
         pos = new Vector3(speedX, 0, 0);
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -96,6 +100,8 @@ public class Snake : MonoBehaviour
     void endGame()
     {
         Time.timeScale = 0;
+        endScreen.SetActive(true);
+        scoreText.text = "Your Score is:  " + score.ToString();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
