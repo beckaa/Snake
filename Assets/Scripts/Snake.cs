@@ -15,6 +15,7 @@ public class Snake : MonoBehaviour
     int score;
     public GameObject endScreen;
     public TMP_Text scoreText;
+    public AudioSource audioEat;
 
 
     // Start is called before the first frame update
@@ -51,6 +52,7 @@ public class Snake : MonoBehaviour
         {
             speedY = 1f;
             pos = new Vector3(0, speedY, 0);
+            head.transform.eulerAngles = new Vector3(0, 0, 180);
             speedX = 0;
 
         }
@@ -58,12 +60,14 @@ public class Snake : MonoBehaviour
         {
             speedY = -1f;
             pos = new Vector3(0, speedY, 0);
+            head.transform.eulerAngles = new Vector3(0, 0, 360);
             speedX = 0;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             speedX = 1f;
             pos = new Vector3(speedX, 0, 0);
+            head.transform.eulerAngles = new Vector3(0, 0, 90);
             speedY = 0;
 
         }
@@ -71,6 +75,7 @@ public class Snake : MonoBehaviour
         {
             speedX = -1f;
             pos = new Vector3(speedX, 0, 0);
+            head.transform.eulerAngles = new Vector3(0, 0, 270);
             speedY = 0;
         }
         else
@@ -85,7 +90,7 @@ public class Snake : MonoBehaviour
     void eat()
     {
         //TODO sound
-        
+        audioEat.Play();
         //add points
         score += 10;
 
